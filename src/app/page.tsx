@@ -3,9 +3,15 @@
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
 
 function App() {
+  let user=null;
   const account = useAccount()
   const { connectors, connect, status, error } = useConnect()
   const { disconnect } = useDisconnect()
+
+  if (window.Telegram?.WebApp) {
+    window.Telegram.WebApp.expand(); // Expands the app to full screen
+    this.user = window.Telegram.WebApp.initDataUnsafe?.user;
+  }
 
   return (
     <>
@@ -41,6 +47,8 @@ function App() {
         <div>{status}</div>
         <div>{error?.message}</div>
       </div>
+
+      <div>USER: {user?`${user.first_name} ${user.last_name}`:"null"}</div>
     </>
   )
 }
