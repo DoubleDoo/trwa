@@ -1,6 +1,8 @@
 'use client'
 
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
+import useTelegram from "@/app/tgapi";
+import {useEffect, useState} from "react";
 
 function App() {
   let user=null;
@@ -8,10 +10,17 @@ function App() {
   const { connectors, connect, status, error } = useConnect()
   const { disconnect } = useDisconnect()
 
-  if (window.Telegram?.WebApp) {
-    window.Telegram.WebApp.expand(); // Expands the app to full screen
-    this.user = window.Telegram.WebApp.initDataUnsafe?.user;
-  }
+  const tg = useTelegram();
+  const [username, setUsername] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (tg) {
+      const user = tg.initDataUnsafe?.user;
+      if (user) {
+        setUsername(user.username || `${user.first_name} ${user.last_name}`);
+      }
+    }
+  }, [tg]);
 
   return (
     <>
@@ -48,7 +57,7 @@ function App() {
         <div>{error?.message}</div>
       </div>
 
-      <div>USER: {user?`${user.first_name} ${user.last_name}`:"null"}</div>
+      <div>Welcome {username || "Guest"}!</div>
     </>
   )
 }
