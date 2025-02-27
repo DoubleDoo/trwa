@@ -1,0 +1,10 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wagmi_app
+    ports:
+      - "9330:3000"
