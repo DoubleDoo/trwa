@@ -12,10 +12,6 @@ const useTelegram = () => {
             if (window.Telegram?.WebApp) {
                 setTg(window.Telegram.WebApp);
                 window.Telegram.WebApp.expand();
-
-                // Fetch the bearer token from Telegram CloudStorage
-                const dataStore = DataStore.getInstance();
-                dataStore.fetchBearerTokenFromTelegramCloudStorage();
             }
         };
         document.body.appendChild(script);

@@ -7,7 +7,7 @@ import DataStore from "@/dataStore"; // Import DataStore class
 
 const api = new API("https://your-api.com", "your-auth-token");
 
-function AuthWaitingPage() {
+function RegisterPage() {
   const tg = useTelegram();
   const [username, setUsername] = useState<string | null>(null);
   const [authStatus, setAuthStatus] = useState<string>("Waiting for authentication...");
@@ -15,20 +15,14 @@ function AuthWaitingPage() {
   useEffect(() => {
     async function authenticate() {
       if (tg) {
-        const user = tg.initDataUnsafe?.user;
+        let src=DataStore.getInstance();
+        const user=src.getUser()
         if (user) {
-          setUsername(user.first_name || "User");
-
-          // Store user data in DataStore
-          const dataStore = DataStore.getInstance();
-          dataStore.setUser({ id: user.id, name: user.first_name || "User" });
-
-          try {
-            // Try authenticating the user
+         try {
             const token = await api.authenticateUser({ tg_id: user.id, hash: "some_hash" });
             if (token) {
               // Store the token in DataStore
-              dataStore.setBearerToken(token);
+              tg.setBearerToken(token);
               setAuthStatus("Authenticated successfully!");
               return;
             }
@@ -63,4 +57,4 @@ function AuthWaitingPage() {
   );
 }
 
-export default AuthWaitingPage;
+export default RegisterPage;

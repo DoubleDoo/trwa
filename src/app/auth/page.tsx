@@ -15,28 +15,30 @@ function AuthWaitingPage() {
 
   useEffect(() => {
     async function authenticate() {
-      const user = tg?.initDataUnsafe?.user;
+      let src=DataStore.getInstance();
+      const user=src.getUser()
       if (!user) return setAuthStatus("Failed to get Telegram user data.");
+      console.log("_______________");
       console.log(user);
-
-      // Save the user data to DataStore
-      const dataStore = DataStore.getInstance();
-      dataStore.setUser({ id: user.id, name: user.username || "Unknown" });
+      console.log(src.getBearerToken());
+      console.log("_______________");
 
       try {
-        // Authenticate the user and get the token
-        const token = await api.authenticateUser({ tg_id: user.id, hash: "some_hash" });
-
+        const token = await api.authenticateUser(user);
+        console.log("_______________");
+        console.log(token);
+        console.log("_______________");
         if (token) {
-          // Save the bearer token to DataStore
-          dataStore.setBearerToken(token);
-
-          // Redirect to the game page
+          console.log("_______________");
+          console.log(await src.getBearerToken());
+          await src.setBearerToken(token);
+          console.log(await src.getBearerToken());
+          console.log("_______________");
           return router.push("/game");
         }
       } catch (error) {
         setAuthStatus("Authentication failed. Redirecting...");
-        setTimeout(() => router.push("/register"), 2000);
+        setTimeout(() => router.push("/register"), 5000);
       }
     }
 
