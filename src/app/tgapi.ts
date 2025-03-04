@@ -10,7 +10,7 @@ const useTelegram = () => {
         script.onload = () => {
             if (window.Telegram?.WebApp) {
                 setTg(window.Telegram.WebApp);
-                window.Telegram.WebApp.expand(); // Expand to full screen
+                window.Telegram.WebApp.expand();
             }
         };
         document.body.appendChild(script);

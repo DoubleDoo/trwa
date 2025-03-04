@@ -17,7 +17,7 @@ function App() {
     if (tg) {
       const user = tg.initDataUnsafe?.user;
       if (user) {
-        setUsername(user.username || `${user.first_name} ${user.last_name}`);
+        setUsername(JSON.stringify(user) || `${JSON.stringify(user)}`);
       }
     }
   }, [tg]);
