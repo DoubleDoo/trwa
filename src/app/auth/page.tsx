@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import useTelegram from "@/app/tgapi";
+import useTelegram from "@/tgapi";
 import API from "@/api/user/user";
+import DataStore from "@/dataStore"; // Import DataStore class
 
 const api = new API("https://your-api.com", "your-auth-token");
 
@@ -16,13 +17,26 @@ function AuthWaitingPage() {
     async function authenticate() {
       const user = tg?.initDataUnsafe?.user;
       if (!user) return setAuthStatus("Failed to get Telegram user data.");
-      console.log(user)
+      console.log(user);
+
+      // Save the user data to DataStore
+      const dataStore = DataStore.getInstance();
+      dataStore.setUser({ id: user.id, name: user.username || "Unknown" });
+
       try {
+        // Authenticate the user and get the token
         const token = await api.authenticateUser({ tg_id: user.id, hash: "some_hash" });
-        if (token) return router.push("/game");
-      } catch {
-          setAuthStatus("Authentication failed. Redirecting...");
-          setTimeout(() => router.push("/register"), 2000);
+
+        if (token) {
+          // Save the bearer token to DataStore
+          dataStore.setBearerToken(token);
+
+          // Redirect to the game page
+          return router.push("/game");
+        }
+      } catch (error) {
+        setAuthStatus("Authentication failed. Redirecting...");
+        setTimeout(() => router.push("/register"), 2000);
       }
     }
 

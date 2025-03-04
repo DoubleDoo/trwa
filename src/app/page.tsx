@@ -1,7 +1,7 @@
 'use client'
 
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
-import useTelegram from "@/app/tgapi";
+import useTelegram from "@/tgapi";
 import {useEffect, useState} from "react";
 
 function App() {

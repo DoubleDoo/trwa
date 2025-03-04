@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import DataStore from "./DataStore"; // Import the DataStore class
 
 const useTelegram = () => {
     const [tg, setTg] = useState<any>(null);
@@ -11,6 +12,10 @@ const useTelegram = () => {
             if (window.Telegram?.WebApp) {
                 setTg(window.Telegram.WebApp);
                 window.Telegram.WebApp.expand();
+
+                // Fetch the bearer token from Telegram CloudStorage
+                const dataStore = DataStore.getInstance();
+                dataStore.fetchBearerTokenFromTelegramCloudStorage();
             }
         };
         document.body.appendChild(script);

@@ -1,8 +1,9 @@
-'use client'
+'use client';
 
-import useTelegram from "@/app/tgapi";
+import useTelegram from "@/tgapi";
 import { useEffect, useState } from "react";
 import API from "@/api/user/user";
+import DataStore from "@/dataStore"; // Import DataStore class
 
 const api = new API("https://your-api.com", "your-auth-token");
 
@@ -17,9 +18,17 @@ function AuthWaitingPage() {
         const user = tg.initDataUnsafe?.user;
         if (user) {
           setUsername(user.first_name || "User");
+
+          // Store user data in DataStore
+          const dataStore = DataStore.getInstance();
+          dataStore.setUser({ id: user.id, name: user.first_name || "User" });
+
           try {
+            // Try authenticating the user
             const token = await api.authenticateUser({ tg_id: user.id, hash: "some_hash" });
             if (token) {
+              // Store the token in DataStore
+              dataStore.setBearerToken(token);
               setAuthStatus("Authenticated successfully!");
               return;
             }
@@ -28,9 +37,12 @@ function AuthWaitingPage() {
           }
 
           try {
+            // If authentication fails, create a new user
             await api.createUser({ nick: user.first_name, tg_id: user.id });
             const token = await api.authenticateUser({ tg_id: user.id, hash: "some_hash" });
             if (token) {
+              // Store the token in DataStore
+              dataStore.setBearerToken(token);
               setAuthStatus("Authenticated successfully after user creation!");
             }
           } catch (error) {
