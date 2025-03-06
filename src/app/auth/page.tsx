@@ -12,13 +12,13 @@ function AuthPage() {
   let user=null;
   if(tg){
     user = tg.initDataUnsafe?.user;
-    let set=tg.CloudStorage.setItem("keykey","value")
+    let set=await tg.CloudStorage.setItem("keykey","value")
     console.log(`Set : ${JSON.stringify(set)}`)
-    let token=tg.CloudStorage.getKeys((res:any)=>{
+    let token= await tg.CloudStorage.getKeys((res:any)=>{
       console.log(`Res : ${JSON.stringify(res)}`)
     })
     console.log(`Token : ${JSON.stringify(token)}`)
-    let vallue=tg.CloudStorage.getItem("keykey")
+    let vallue= await tg.CloudStorage.getItem("keykey")
     console.log(`vallue : ${JSON.stringify(vallue)}`)
     console.log(`User : ${JSON.stringify(user)}`)
   }
