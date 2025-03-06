@@ -26,8 +26,9 @@ function AuthPage() {
         console.log("CloudStorage:", isCloudStorageSupported());
 
         setAuthStatus("Checking stored token...");
+        console.log("__________________________________________________________")
         let token = await getCloudStorageItem("bearerToken");
-
+        console.log("__________________________________________________________")
         if (!token) {
           setAuthStatus("No token found. Registering user...");
           const registerResponse = await api.registerUser(initDataRaw);
