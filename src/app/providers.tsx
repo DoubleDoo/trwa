@@ -5,6 +5,7 @@ import { type ReactNode, useState } from 'react'
 import { type State, WagmiProvider } from 'wagmi'
 
 import { getConfig } from '@/wagmi'
+import {UnityProvider} from "react-unity-webgl/distribution/types/unity-provider";
 
 export function Providers(props: {
   children: ReactNode

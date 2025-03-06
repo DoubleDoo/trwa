@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import React from "react";
+import { Unity, useUnityContext } from "react-unity-webgl";
 
 export default function FutureGamePage() {
   const [loading, setLoading] = useState(true);
@@ -10,10 +12,12 @@ export default function FutureGamePage() {
     return () => clearTimeout(timer);
   }, []);
 
-  return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', textAlign: 'center' }}>
-        <h1>Future Game</h1>
-        {loading ? <p>Loading game details...</p> : <p>Stay tuned for something amazing!</p>}
-      </div>
-  );
+    const { unityProvider } = useUnityContext({
+        loaderUrl: "./build/UnityBuild.loader.js",
+        dataUrl: "./build/UnityBuild.data.unityweb",
+        frameworkUrl: "./build/UnityBuild.framework.js." +
+            "",
+        codeUrl: "./build/UnityBuild.wasm.unityweb",
+    });
+    return <Unity unityProvider={unityProvider} />;
 }
