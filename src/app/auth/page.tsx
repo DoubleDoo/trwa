@@ -9,13 +9,19 @@ function AuthPage() {
   const [authStatus, setAuthStatus] = useState("Initializing...");
   const router = useRouter();
   let tg=useTelegram();
-  console.log("______________");
+  let user=null;
   if(tg){
-    const user = tg.initDataUnsafe?.user;
-    if (user) {
-      console.log(user);
-    }
-    console.log("______________");
+    user = tg.initDataUnsafe?.user;
+    let token=null
+    console.log("______________")
+    token=tg.CloudStorage.getKeys().then((res:any)=>{
+      console.log("______________")
+      console.log(res)
+      console.log("______________")
+      return res
+    })
+    console.log(token)
+    console.log("______________")
   }
   useEffect(() => {
     async function authenticate() {
