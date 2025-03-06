@@ -40,7 +40,7 @@ class TelegramAPI {
     async setItem(key: string, value: string): Promise<{ success: boolean; status: any }> {
         return new Promise((resolve, reject) => {
             this.storage.setItem(key, value, (status: any, isSet: boolean) => {
-                if (status) {
+                if (!status) {
                     resolve({ success: isSet, status });
                 } else {
                     reject(new Error("Failed to set item"));
@@ -52,7 +52,7 @@ class TelegramAPI {
     async getItem(key: string): Promise<string | null> {
         return new Promise((resolve, reject) => {
             this.storage.getItem(key, (status: any, value: string | null) => {
-                if (status) {
+                if (!status) {
                     resolve(value);
                 } else {
                     reject(new Error("Failed to get item"));
@@ -64,7 +64,7 @@ class TelegramAPI {
     async getKeys(): Promise<string[]> {
         return new Promise((resolve, reject) => {
             this.storage.getKeys((status: any, keys: string[]) => {
-                if (status) {
+                if (!status) {
                     resolve(keys);
                 } else {
                     reject(new Error("Failed to get keys"));
