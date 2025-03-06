@@ -14,8 +14,7 @@ function AuthPage() {
     user = tg.initDataUnsafe?.user;
     let token=null
     console.log("______________")
-    token=tg.CloudStorage.getKeys().then((res:any)=>{
-      console.log("______________")
+    token=tg.CloudStorage.getKeys((res:any)=>{
       console.log(res)
       console.log("______________")
       return res
