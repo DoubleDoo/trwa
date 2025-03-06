@@ -24,6 +24,8 @@ function AuthWaitingPage() {
     if (!isClient) return; // Prevent execution on the server
 
     async function authenticate() {
+      let info= cloudStorage.isSupported();
+      setAuthStatus(`Set token: ${info}`);
       let token = await src.getBearerToken();
       if (token) {
         console.log("Have token:", token);
@@ -34,8 +36,6 @@ function AuthWaitingPage() {
         console.log("Set token:", token);
         setAuthStatus(`Set token: ${token}`);
       }
-      let info= cloudStorage.isSupported();
-      setAuthStatus(`Set token: ${info}`);
     }
 
     authenticate();
