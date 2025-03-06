@@ -8,13 +8,14 @@ import useTelegram from "@/tgapi";
 function AuthPage() {
   const [authStatus, setAuthStatus] = useState("Initializing...");
   const router = useRouter();
-  useTelegram();
+  let tg=useTelegram();
   console.log("______________");
-  console.log(initDataUser());
+  const user = tg.initDataUnsafe?.user;
+  if (user) {
+    console.log(user);
+  }
   console.log("______________");
   useEffect(() => {
-    if (typeof window === "undefined") return; // Ensure it runs only on the client
-
     async function authenticate() {
       // try {
     //     setAuthStatus("Retrieving launch params...");
