@@ -27,13 +27,13 @@ function AuthPage() {
       console.log("Successfully set item in CloudStorage");
 
       // Retrieve keys correctly
-      tg.CloudStorage.getKeys((keys:any) => {
-        console.log(`Retrieved Keys: ${JSON.stringify(keys)}`);
+      let {stts,vallll} =await tg.CloudStorage.getKeys((sdasd,keys:any) => {
+        console.log(`Retrieved Keys1: ${JSON.stringify(keys)}`);
       });
-
+      console.log(`Retrieved Keys2: ${JSON.stringify(vallll)}`);
       // Retrieve stored value
-      const value = await tg.CloudStorage.getItem("keykey");
-      console.log(`Retrieved Value: ${JSON.stringify(value)}`);
+      const {status,value} = await tg.CloudStorage.getItem("keykey
+      console.log(`Retrieved Value: ${JSON.stringify(value)},${JSON.stringify(status)}`);
     } catch (error:any) {
       console.error("Error interacting with CloudStorage:", error);
     }
