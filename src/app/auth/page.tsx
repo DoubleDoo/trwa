@@ -6,6 +6,7 @@ import useTelegram from "@/tgapi";
 import API from "@/api/user/user";
 import DataStore from "@/dataStore";
 import {cloudStorage, retrieveLaunchParams} from '@telegram-apps/sdk';
+import {a} from "ofetch/dist/shared/ofetch.d0b3d489";
 
 const api = new API("https://your-api.com", "your-auth-token");
 
@@ -28,7 +29,7 @@ function AuthWaitingPage() {
     if (!isClient) return; // Prevent execution on the server
 
     async function authenticate() {
-      let info= cloudStorage.isSupported();
+      let info= await cloudStorage.isSupported();
       setAuthStatus(`Set token: ${initDataRaw}`);
       console.log(initDataRaw)
       let token = await src.getBearerToken();
