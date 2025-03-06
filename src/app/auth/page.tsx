@@ -2,12 +2,14 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { init, retrieveLaunchParams, cloudStorage } from "@telegram-apps/sdk";
+import {initDataUser} from "@telegram-apps/sdk";
+import useTelegram from "@/tgapi";
 
 function AuthPage() {
   const [authStatus, setAuthStatus] = useState("Initializing...");
   const router = useRouter();
-
+  useTelegram();
+  console.log(initDataUser);
   useEffect(() => {
     if (typeof window === "undefined") return; // Ensure it runs only on the client
 
