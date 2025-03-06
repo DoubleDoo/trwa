@@ -16,17 +16,17 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout(props: { children: ReactNode }) {
-  const initialState = cookieToInitialState(
-    // getConfig(),
-    // headers().get('cookie'),
-  )
+  // const initialState = cookieToInitialState(
+  //   // getConfig(),
+  //   // headers().get('cookie'),
+  // )
   return (
     <html lang="en">
     <head>
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
     </head>
     <body className={inter.className}>
-    <Providers initialState={initialState}>{props.children}</Providers>
+    {/*<Providers initialState={initialState}>{props.children}</Providers>*/}
       </body>
     </html>
   )
