@@ -12,7 +12,6 @@ const api = new API("https://your-api.com", "your-auth-token");
 
 function AuthWaitingPage() {
 
-  const { initDataRaw } = retrieveLaunchParams();
 
 
   const [authStatus, setAuthStatus] = useState("Authenticating...");
@@ -29,6 +28,7 @@ function AuthWaitingPage() {
     if (!isClient) return; // Prevent execution on the server
 
     async function authenticate() {
+      const { initDataRaw } = await retrieveLaunchParams();
       let info= await cloudStorage.isSupported();
       setAuthStatus(`Set token: ${initDataRaw}`);
       console.log(initDataRaw)
