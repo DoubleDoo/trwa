@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { retrieveLaunchParams, cloudStorage } from "@telegram-apps/sdk";
+import {retrieveLaunchParams, cloudStorage, init} from "@telegram-apps/sdk";
 import API from "@/api/user/user";
 import useTelegram from "@/tgapi";
 
@@ -16,6 +16,7 @@ function AuthPage() {
   useEffect(() => {
     async function authenticate() {
       try {
+        await init();
         setAuthStatus("Retrieving launch params...");
         const { initDataRaw } = await retrieveLaunchParams();
         const user = tg?.initDataUnsafe?.user;
