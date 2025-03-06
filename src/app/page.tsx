@@ -1,7 +1,6 @@
 'use client'
 
 import { useAccount, useConnect, useDisconnect } from 'wagmi'
-import { init, miniApp } from '@telegram-apps/sdk';
 import useTelegram from "@/tgapi";
 import {useEffect, useState} from "react";
 

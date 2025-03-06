@@ -2,33 +2,32 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import {retrieveLaunchParams, setCloudStorageItem,getCloudStorageItem,isCloudStorageSupported, cloudStorage , init} from "@telegram-apps/sdk";
+import { init, retrieveLaunchParams, cloudStorage } from "@telegram-apps/sdk";
 import API from "@/api/user/user";
 import useTelegram from "@/tgapi";
 
 const api = new API("https://your-api.com", "your-auth-token");
 
 function AuthPage() {
-  const [authStatus, setAuthStatus] = useState("Authenticating...");
+  const [authStatus, setAuthStatus] = useState("Initializing...");
   const router = useRouter();
   const tg = useTelegram();
 
   useEffect(() => {
+    if (typeof window === "undefined") return; // Ensure it runs only on the client
+
     async function authenticate() {
       try {
-        await init();
         setAuthStatus("Retrieving launch params...");
         const { initDataRaw } = await retrieveLaunchParams();
         const user = tg?.initDataUnsafe?.user;
 
         console.log("Telegram Launch Params:", initDataRaw);
         console.log("Telegram User Data:", user);
-        console.log("CloudStorage:", isCloudStorageSupported());
 
         setAuthStatus("Checking stored token...");
-        console.log("__________________________________________________________")
         let token = await cloudStorage.getItem("bearerToken");
-        console.log("__________________________________________________________")
+
         if (!token) {
           setAuthStatus("No token found. Registering user...");
           const registerResponse = await api.registerUser(initDataRaw);
@@ -41,7 +40,7 @@ function AuthPage() {
 
           token = registerResponse.token;
         }
-        console.log("__________________________________________________________")
+
         setAuthStatus("Authenticating...");
         const authResponse = await api.authenticateUser(token);
 
