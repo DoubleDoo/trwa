@@ -9,7 +9,6 @@ import { cookieToInitialState } from 'wagmi'
 
 import { getConfig } from '../wagmi'
 import { Providers } from './providers'
-import {init} from "@telegram-apps/sdk";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,8 +22,6 @@ export default async function RootLayout(props: { children: ReactNode }) {
     getConfig(),
     headers().get('cookie'),
   )
- console.log("Инициализация окружения Telegram");
- await init();
   return (
       <html lang="en">
       <head>
