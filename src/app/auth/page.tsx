@@ -9,7 +9,9 @@ function AuthPage() {
   const [authStatus, setAuthStatus] = useState("Initializing...");
   const router = useRouter();
   useTelegram();
-  console.log(initDataUser);
+  console.log("______________");
+  console.log(initDataUser());
+  console.log("______________");
   useEffect(() => {
     if (typeof window === "undefined") return; // Ensure it runs only on the client
 
