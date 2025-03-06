@@ -23,13 +23,13 @@ function AuthWaitingPage() {
     if (!isClient) return; // Prevent execution on the server
 
     async function authenticate() {
-      let token = src.getBearerToken();
+      let token = await src.getBearerToken();
       if (token) {
         console.log("Have token:", token);
         setAuthStatus(`Have token: ${token}`);
       } else {
-        src.setBearerToken(new Date().toISOString());
-        token = src.getBearerToken(); // Retrieve updated token
+        await src.setBearerToken(new Date().toISOString());
+        token = await src.getBearerToken(); // Retrieve updated token
         console.log("Set token:", token);
         setAuthStatus(`Set token: ${token}`);
       }
