@@ -22,15 +22,18 @@ function AuthPage() {
 
     try {
       console.log(tg.CloudStorage);
-      let {setStatus,resultA, resultB} =  await tg.CloudStorage.setItem("keykey", "value");
-      console.log(`setItem: ${JSON.stringify(setStatus)}  ${JSON.stringify(resultA)}  ${JSON.stringify(resultB)}`);
+      await tg.CloudStorage.setItem("keykey", "value",(setStatus,resultA, resultB)=>{
+        console.log(`setItem: ${JSON.stringify(setStatus)}  ${JSON.stringify(resultA)}  ${JSON.stringify(resultB)}`);
+      });
 
-      let {getAllStatus,resultC, resultD} =await tg.CloudStorage.getKeys();
-      console.log(`getKeys: ${JSON.stringify(getAllStatus)}  ${JSON.stringify(resultC)}  ${JSON.stringify(resultD)}`);
+      await tg.CloudStorage.getKeys((setStatus,resultA, resultB)=>{
+        console.log(`setItem: ${JSON.stringify(setStatus)}  ${JSON.stringify(resultA)}  ${JSON.stringify(resultB)}`);
+      });
 
-      const {getStatus,resultE, resultF} = await tg.CloudStorage.getItem("keykey")
-      console.log(`getItem: ${JSON.stringify(getStatus)}  ${JSON.stringify(resultE)}  ${JSON.stringify(resultF)}`);
-      
+      const {getStatus,resultE, resultF} = await tg.CloudStorage.getItem("keykey",(setStatus,resultA, resultB)=>{
+        console.log(`setItem: ${JSON.stringify(setStatus)}  ${JSON.stringify(resultA)}  ${JSON.stringify(resultB)}`);
+      });
+
     } catch (error:any) {
       console.error("Error interacting with CloudStorage:", error);
     }
