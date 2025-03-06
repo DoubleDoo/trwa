@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import {initDataUser} from "@telegram-apps/sdk";
 import useTelegram from "@/tgapi";
 
-function AuthPage() {
+async function AuthPage() {
   const [authStatus, setAuthStatus] = useState("Initializing...");
   const router = useRouter();
   let tg=useTelegram();
