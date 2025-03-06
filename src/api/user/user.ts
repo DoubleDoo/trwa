@@ -23,7 +23,7 @@ class API {
         });
     }
 
-    async createUser(user: UserDTO): Promise<any> {
+    async registerUser(user: any): Promise<any> {
         try {
             const response = await this.api.post('/models/c6kqziew', user);
             return response.data;
@@ -33,7 +33,7 @@ class API {
         }
     }
 
-    async authenticateUser(user: AuthData): Promise<any> {
+    async authenticateUser(user: any): Promise<any> {
         try {
             // const response = await this.api.post('/auth', user);
             // return response.data;

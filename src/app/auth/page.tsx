@@ -2,55 +2,56 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import useTelegram from "@/tgapi";
+import { retrieveLaunchParams, cloudStorage } from "@telegram-apps/sdk";
 import API from "@/api/user/user";
-import DataStore from "@/dataStore";
-import {cloudStorage, retrieveLaunchParams} from '@telegram-apps/sdk';
-import {a} from "ofetch/dist/shared/ofetch.d0b3d489";
 
 const api = new API("https://your-api.com", "your-auth-token");
 
 function AuthWaitingPage() {
-
-
-
   const [authStatus, setAuthStatus] = useState("Authenticating...");
-  const [isClient, setIsClient] = useState(false); // Ensure rendering only on the client
   const router = useRouter();
-  let src = DataStore.getInstance();
-  let tg = useTelegram();
 
   useEffect(() => {
-    setIsClient(true); // Mark as client-side
-  }, []);
-
-  useEffect(() => {
-    if (!isClient) return; // Prevent execution on the server
-
     async function authenticate() {
-      const { initDataRaw } = await retrieveLaunchParams();
-      let info= await cloudStorage.isSupported();
-      setAuthStatus(`Set token: ${initDataRaw}`);
-      console.log(initDataRaw)
-      let token = await src.getBearerToken();
-      if (token) {
-        console.log("Have token:", token);
-        setAuthStatus(`Have token: ${token}`);
-      } else {
-        await src.setBearerToken(new Date().toISOString());
-        token = await src.getBearerToken(); // Retrieve updated token
-        console.log("Set token:", token);
-        setAuthStatus(`Set token: ${token}`);
+      try {
+        setAuthStatus("Retrieving launch params...");
+        const { initDataRaw } = await retrieveLaunchParams();
+
+        setAuthStatus("Checking stored token...");
+        let token = await cloudStorage.getItem("bearerToken");
+
+        if (!token) {
+          setAuthStatus("No token found. Trying to register...");
+          const registerResponse = await api.registerUser(initDataRaw);
+
+          if (!registerResponse.success) {
+            setAuthStatus("Registration failed. Please try again.");
+            return;
+          }
+
+          setAuthStatus("Registration successful. Trying authentication...");
+          token = registerResponse.token;
+        }
+
+        const authResponse = await api.authenticateUser(token);
+        if (!authResponse.success) {
+          setAuthStatus("Authentication failed. Please try again.");
+          return;
+        }
+
+        setAuthStatus("Authentication successful. Saving token...");
+        await cloudStorage.setItem("bearerToken", token);
+
+        setAuthStatus("Redirecting to game...");
+        router.push("/game");
+      } catch (error) {
+        setAuthStatus("An error occurred. Please try again.");
+        console.error("Auth error:", error);
       }
     }
 
     authenticate();
-  }, [isClient, src, tg, router]);
-
-  // Avoid rendering mismatched UI during hydration
-  if (!isClient) {
-    return <div>Loading...</div>; // Ensures SSR output is stable
-  }
+  }, [router]);
 
   return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', textAlign: 'center' }}>
