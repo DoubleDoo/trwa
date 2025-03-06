@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import {initDataUser} from "@telegram-apps/sdk";
 import useTelegram from "@/tgapi";
 
 function AuthPage() {
@@ -28,14 +27,14 @@ function AuthPage() {
       console.log("Successfully set item in CloudStorage");
 
       // Retrieve keys correctly
-      tg.CloudStorage.getKeys((keys) => {
+      tg.CloudStorage.getKeys((keys:any) => {
         console.log(`Retrieved Keys: ${JSON.stringify(keys)}`);
       });
 
       // Retrieve stored value
       const value = await tg.CloudStorage.getItem("keykey");
       console.log(`Retrieved Value: ${JSON.stringify(value)}`);
-    } catch (error) {
+    } catch (error:any) {
       console.error("Error interacting with CloudStorage:", error);
     }
   };
