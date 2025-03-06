@@ -7,8 +7,8 @@ export function getConfig() {
     chains: [mainnet, sepolia],
     connectors: [
       injected(),
-      coinbaseWallet(),
-      walletConnect({ projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID }),
+      // coinbaseWallet(),
+      // walletConnect({ projectId: process.env.NEXT_PUBLIC_WC_PROJECT_ID }),
     ],
     storage: createStorage({
       storage: cookieStorage,
