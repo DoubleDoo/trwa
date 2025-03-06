@@ -23,7 +23,7 @@ function AuthPage() {
 
         console.log("Telegram Launch Params:", initDataRaw);
         console.log("Telegram User Data:", user);
-        console.log("CloudStorage:", isCloudStorageSupported);
+        console.log("CloudStorage:", isCloudStorageSupported());
 
         setAuthStatus("Checking stored token...");
         let token = await getCloudStorageItem("bearerToken");
