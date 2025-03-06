@@ -17,8 +17,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout(props: { children: ReactNode }) {
   const initialState = cookieToInitialState(
-    getConfig(),
-    headers().get('cookie'),
+    // getConfig(),
+    // headers().get('cookie'),
   )
   return (
     <html lang="en">

@@ -4,19 +4,23 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { retrieveLaunchParams, cloudStorage } from "@telegram-apps/sdk";
 import API from "@/api/user/user";
+import useTelegram from "@/tgapi";
 
 const api = new API("https://your-api.com", "your-auth-token");
 
 function AuthWaitingPage() {
   const [authStatus, setAuthStatus] = useState("Authenticating...");
   const router = useRouter();
+  const tg = useTelegram();
 
   useEffect(() => {
     async function authenticate() {
       try {
         setAuthStatus("Retrieving launch params...");
         const { initDataRaw } = await retrieveLaunchParams();
-
+        const user = tg.initDataUnsafe?.user;
+        console.log(initDataRaw)
+        console.log(user)
         setAuthStatus("Checking stored token...");
         let token = await cloudStorage.getItem("bearerToken");
 
