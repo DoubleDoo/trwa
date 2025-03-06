@@ -5,7 +5,7 @@ const useTelegram = () => {
 
     useEffect(() => {
         const script = document.createElement("script");
-        script.src = "https://telegram.org/js/telegram-web-app.js";
+        script.src = "https://telegram.org/js/telegram-web-app.js?56";
         script.async = true;
         script.onload = () => {
             if (window.Telegram?.WebApp) {
