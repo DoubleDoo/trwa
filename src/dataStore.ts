@@ -19,11 +19,11 @@ class DataStore {
     }
 
     public async setBearerToken(token: string) {
-        await this.tg.cloudStorage.setData("bearer_token",token)
+        await this.tg.CloudStorage.setData("bearer_token",token)
     }
 
     public async getBearerToken() {
-        let token=await this.tg.cloudStorage.getData("bearer_token")
+        let token=await this.tg.CloudStorage.getData("bearer_token")
         if (token) {
             return token;
         }
