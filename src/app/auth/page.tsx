@@ -1,96 +1,66 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import useTelegram from "@/tgapi";
+import useTelegramAPI from "@/useTelegram";
+import {authenticateUser, registerUser} from "@/api";
 
 function AuthPage() {
   const [authStatus, setAuthStatus] = useState("Initializing...");
   const router = useRouter();
-  let tg=useTelegram();
-  let user=null;
+  const { tg, api } = useTelegramAPI(); // Use the custom Telegram API hook
 
-  const ffff = async () => {
-    if (!tg) {
-      console.error("Telegram WebApp is not initialized yet.");
-      return;
-    }
+  useEffect(() => {
+    if (!tg || !api) return;
+    authenticate();
+  }, [tg, api]);
 
-    // Retrieve user information
-    user = tg.initDataUnsafe?.user;
-    console.log(`User: ${JSON.stringify(user)}`);
-
+  const authenticate = async () => {
     try {
-      console.log(tg.CloudStorage);
-      await tg.CloudStorage.setItem("keykey2", "value2",(setStatus,resultA, resultB)=>{
-        console.log(`setItem: ${JSON.stringify(setStatus)}  ${JSON.stringify(resultA)}  ${JSON.stringify(resultB)}`);
-      });
+      setAuthStatus("Retrieving Telegram user...");
 
-      await tg.CloudStorage.getKeys((setStatus,resultA, resultB)=>{
-        console.log(`getKeys: ${JSON.stringify(setStatus)}  ${JSON.stringify(resultA)}  ${JSON.stringify(resultB)}`);
-      });
+      const user = api!.getUser();
+      if (!user) {
+        setAuthStatus("User data unavailable.");
+        return;
+      }
+      console.log("Telegram User:", user);
 
-      const {getStatus,resultE, resultF} = await tg.CloudStorage.getItem("keykey3",(setStatus,resultA, resultB)=>{
-        console.log(`getItem: ${JSON.stringify(setStatus)}  ${JSON.stringify(resultA)}  ${JSON.stringify(resultB)}`);
-      });
+      setAuthStatus("Checking stored token...");
+      let token = await api!.getItem("bearerToken");
 
-    } catch (error:any) {
-      console.error("Error interacting with CloudStorage:", error);
+      if (!token) {
+        setAuthStatus("No token found. Registering user...");
+        const registerResponse = await registerUser(user);
+
+        if (!registerResponse?.success || !registerResponse?.token) {
+          setAuthStatus("Registration failed.");
+          console.error("Registration failed:", registerResponse);
+          return;
+        }
+
+        token = registerResponse.token;
+        await api!.setItem("bearerToken", token!);
+      }
+
+      setAuthStatus("Authenticating...");
+      const authResponse = await authenticateUser(token!);
+
+      if (!authResponse?.success) {
+        setAuthStatus("Authentication failed.");
+        console.error("Authentication failed:", authResponse);
+        return;
+      }
+
+      setAuthStatus("Authentication successful! Redirecting...");
+      setTimeout(() => {
+        router.push("/game");
+      }, 1000);
+    } catch (error) {
+      setAuthStatus("An error occurred. Please try again.");
+      console.error("Authentication error:", error);
     }
   };
-
-
-  if(tg){
-    ffff();
-  }
-  useEffect(() => {
-    async function authenticate() {
-      // try {
-      //   setAuthStatus("Retrieving launch params...");
-      //   const { initDataRaw } = await retrieveLaunchParams();
-      //   const user = tg?.initDataUnsafe?.user;
-      //
-      //   console.log("Telegram Launch Params:", initDataRaw);
-      //   console.log("Telegram User Data:", user);
-      //
-      //   setAuthStatus("Checking stored token...");
-      //   let token = await cloudStorage.getItem("bearerToken");
-      //
-      //   if (!token) {
-      //     setAuthStatus("No token found. Registering user...");
-      //     const registerResponse = await api.registerUser(initDataRaw);
-      //
-      //     if (!registerResponse?.success || !registerResponse?.token) {
-      //       setAuthStatus("Registration failed. Please try again.");
-      //       console.error("Registration failed:", registerResponse);
-      //       return;
-      //     }
-      //
-      //     token = registerResponse.token;
-      //   }
-      //
-      //   setAuthStatus("Authenticating...");
-      //   const authResponse = await api.authenticateUser(token);
-      //
-      //   if (!authResponse?.success) {
-      //     setAuthStatus("Authentication failed. Please try again.");
-      //     console.error("Authentication failed:", authResponse);
-      //     return;
-      //   }
-      //
-      //   setAuthStatus("Authentication successful. Saving token...");
-      //   await cloudStorage.setItem("bearerToken", token);
-      //
-      //   setAuthStatus("Redirecting to game...");
-      //   router.push("/game");
-      // } catch (error) {
-      //   setAuthStatus("An error occurred. Please try again.");
-      //   console.error("Authentication error:", error);
-      // }
-    }
-
-    authenticate();
-  }, [router]);
 
   return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', textAlign: 'center' }}>
