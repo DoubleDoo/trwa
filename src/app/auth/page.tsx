@@ -4,55 +4,44 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useTelegram from "@/tgapi";
 import API from "@/api/user/user";
-import {date} from "zod";
-import DataStore from "@/dataStore"; // Import DataStore class
+import DataStore from "@/dataStore";
 
 const api = new API("https://your-api.com", "your-auth-token");
 
 function AuthWaitingPage() {
-  let src=DataStore.getInstance();
-  let tg = useTelegram();
-  const router = useRouter();
   const [authStatus, setAuthStatus] = useState("Authenticating...");
+  const [isClient, setIsClient] = useState(false); // Ensure rendering only on the client
+  const router = useRouter();
+  let src = DataStore.getInstance();
+  let tg = useTelegram();
 
   useEffect(() => {
+    setIsClient(true); // Mark as client-side
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return; // Prevent execution on the server
+
     async function authenticate() {
-      let token=src.getBearerToken();
-      if (token){
-        console.log("Have token : ", token)
-      }
-      else {
+      let token = src.getBearerToken();
+      if (token) {
+        console.log("Have token:", token);
+        setAuthStatus(`Have token: ${token}`);
+      } else {
         src.setBearerToken(new Date().toISOString());
-        console.log("Set token : ", token)
+        token = src.getBearerToken(); // Retrieve updated token
+        console.log("Set token:", token);
+        setAuthStatus(`Set token: ${token}`);
       }
-      // const user=src.getUser()
-      // if (!user) return setAuthStatus("Failed to get Telegram user data.");
-      // console.log("_______________");
-      // console.log(user);
-      // console.log(src.getBearerToken());
-      // console.log("_______________");
-      //
-      // try {
-      //   const token = await api.authenticateUser(user);
-      //   console.log("_______________");
-      //   console.log(token);
-      //   console.log("_______________");
-      //   if (token) {
-      //     console.log("_______________");
-      //     console.log(await src.getBearerToken());
-      //     await src.setBearerToken(token);
-      //     console.log(await src.getBearerToken());
-      //     console.log("_______________");
-      //     return router.push("/game");
-      //   }
-      // } catch (error) {
-      //   setAuthStatus("Authentication failed. Redirecting...");
-      //   setTimeout(() => router.push("/register"), 5000);
-      // }
     }
 
     authenticate();
-  }, [tg, router]);
+  }, [isClient, src, tg, router]);
+
+  // Avoid rendering mismatched UI during hydration
+  if (!isClient) {
+    return <div>Loading...</div>; // Ensures SSR output is stable
+  }
 
   return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', textAlign: 'center' }}>
