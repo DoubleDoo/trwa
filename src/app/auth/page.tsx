@@ -4,42 +4,51 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useTelegram from "@/tgapi";
 import API from "@/api/user/user";
+import {date} from "zod";
 import DataStore from "@/dataStore"; // Import DataStore class
 
 const api = new API("https://your-api.com", "your-auth-token");
 
 function AuthWaitingPage() {
-  const tg = useTelegram();
+  let src=DataStore.getInstance();
+  let tg = useTelegram();
   const router = useRouter();
   const [authStatus, setAuthStatus] = useState("Authenticating...");
 
   useEffect(() => {
     async function authenticate() {
-      let src=DataStore.getInstance();
-      const user=src.getUser()
-      if (!user) return setAuthStatus("Failed to get Telegram user data.");
-      console.log("_______________");
-      console.log(user);
-      console.log(src.getBearerToken());
-      console.log("_______________");
-
-      try {
-        const token = await api.authenticateUser(user);
-        console.log("_______________");
-        console.log(token);
-        console.log("_______________");
-        if (token) {
-          console.log("_______________");
-          console.log(await src.getBearerToken());
-          await src.setBearerToken(token);
-          console.log(await src.getBearerToken());
-          console.log("_______________");
-          return router.push("/game");
-        }
-      } catch (error) {
-        setAuthStatus("Authentication failed. Redirecting...");
-        setTimeout(() => router.push("/register"), 5000);
+      let token=src.getBearerToken();
+      if (token){
+        console.log("Have token : ", token)
       }
+      else {
+        src.setBearerToken(new Date().toISOString());
+        console.log("Set token : ", token)
+      }
+      // const user=src.getUser()
+      // if (!user) return setAuthStatus("Failed to get Telegram user data.");
+      // console.log("_______________");
+      // console.log(user);
+      // console.log(src.getBearerToken());
+      // console.log("_______________");
+      //
+      // try {
+      //   const token = await api.authenticateUser(user);
+      //   console.log("_______________");
+      //   console.log(token);
+      //   console.log("_______________");
+      //   if (token) {
+      //     console.log("_______________");
+      //     console.log(await src.getBearerToken());
+      //     await src.setBearerToken(token);
+      //     console.log(await src.getBearerToken());
+      //     console.log("_______________");
+      //     return router.push("/game");
+      //   }
+      // } catch (error) {
+      //   setAuthStatus("Authentication failed. Redirecting...");
+      //   setTimeout(() => router.push("/register"), 5000);
+      // }
     }
 
     authenticate();
