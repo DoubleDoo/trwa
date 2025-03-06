@@ -5,11 +5,15 @@ import { useRouter } from "next/navigation";
 import useTelegram from "@/tgapi";
 import API from "@/api/user/user";
 import DataStore from "@/dataStore";
-import { cloudStorage } from '@telegram-apps/sdk';
+import {cloudStorage, retrieveLaunchParams} from '@telegram-apps/sdk';
 
 const api = new API("https://your-api.com", "your-auth-token");
 
 function AuthWaitingPage() {
+
+  const { initDataRaw } = retrieveLaunchParams();
+
+
   const [authStatus, setAuthStatus] = useState("Authenticating...");
   const [isClient, setIsClient] = useState(false); // Ensure rendering only on the client
   const router = useRouter();
@@ -25,7 +29,8 @@ function AuthWaitingPage() {
 
     async function authenticate() {
       let info= cloudStorage.isSupported();
-      setAuthStatus(`Set token: ${info}`);
+      setAuthStatus(`Set token: ${initDataRaw}`);
+      console.log(initDataRaw)
       let token = await src.getBearerToken();
       if (token) {
         console.log("Have token:", token);
