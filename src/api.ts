@@ -22,7 +22,7 @@ export const registerUser = async (user: any) => {
 
 
 export const authenticateUser = async (token: string) => {
-    return { success: false};
+    return { success: true};
     // try {
     //     const response = await apiClient.post(
     //         "/auth/login",
