@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import useTelegram from "@/tgapi";
 import API from "@/api/user/user";
 import DataStore from "@/dataStore";
+import { cloudStorage } from '@telegram-apps/sdk';
 
 const api = new API("https://your-api.com", "your-auth-token");
 
@@ -33,6 +34,8 @@ function AuthWaitingPage() {
         console.log("Set token:", token);
         setAuthStatus(`Set token: ${token}`);
       }
+      let info= cloudStorage.isSupported();
+      setAuthStatus(`Set token: ${info}`);
     }
 
     authenticate();
