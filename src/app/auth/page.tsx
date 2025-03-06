@@ -5,12 +5,13 @@ import { useRouter } from "next/navigation";
 import {initDataUser} from "@telegram-apps/sdk";
 import useTelegram from "@/tgapi";
 
-async function AuthPage() {
+function AuthPage() {
   const [authStatus, setAuthStatus] = useState("Initializing...");
   const router = useRouter();
   let tg=useTelegram();
   let user=null;
-  if(tg){
+
+  const ffff=async ()=>{
     user = tg.initDataUnsafe?.user;
     let set=await tg.CloudStorage.setItem("keykey","value")
     console.log(`Set : ${JSON.stringify(set)}`)
@@ -21,6 +22,10 @@ async function AuthPage() {
     let vallue= await tg.CloudStorage.getItem("keykey")
     console.log(`vallue : ${JSON.stringify(vallue)}`)
     console.log(`User : ${JSON.stringify(user)}`)
+  }
+
+  if(tg){
+    ffff();
   }
   useEffect(() => {
     async function authenticate() {
