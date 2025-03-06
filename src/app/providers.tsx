@@ -10,6 +10,8 @@ export function Providers(props: {
   children: ReactNode
   initialState?: State
 }) {
+
+
   const [config] = useState(() => getConfig())
   const [queryClient] = useState(() => new QueryClient())
 

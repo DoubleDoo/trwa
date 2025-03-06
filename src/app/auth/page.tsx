@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import {retrieveLaunchParams, setCloudStorageItem,getCloudStorageItem,isCloudStorageSupported , init} from "@telegram-apps/sdk";
+import {retrieveLaunchParams, setCloudStorageItem,getCloudStorageItem,isCloudStorageSupported, cloudStorage , init} from "@telegram-apps/sdk";
 import API from "@/api/user/user";
 import useTelegram from "@/tgapi";
 
@@ -41,7 +41,7 @@ function AuthPage() {
 
           token = registerResponse.token;
         }
-
+        console.log("__________________________________________________________")
         setAuthStatus("Authenticating...");
         const authResponse = await api.authenticateUser(token);
 

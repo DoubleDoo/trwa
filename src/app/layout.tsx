@@ -7,6 +7,7 @@ import { cookieToInitialState } from 'wagmi'
 
 import { getConfig } from '../wagmi'
 import { Providers } from './providers'
+import {init, miniApp} from "@telegram-apps/sdk";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,6 +21,24 @@ export default function RootLayout(props: { children: ReactNode }) {
     getConfig(),
     headers().get('cookie'),
   )
+  const initializeTelegramSDK = async () => {
+    try {
+      await init();
+
+
+      if (miniApp.ready.isAvailable()) {
+        await miniApp.ready();
+        console.log('Mini App готово');
+      }
+
+
+    } catch (error) {
+      console.error('Ошибка инициализации:', error);
+    }
+  };
+
+  initializeTelegramSDK();
+
   return (
     <html lang="en">
     <head>
