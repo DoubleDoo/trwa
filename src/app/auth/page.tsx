@@ -22,16 +22,16 @@ function AuthPage() {
 
     try {
       console.log(tg.CloudStorage);
-      await tg.CloudStorage.setItem("keykey", "value",(setStatus,resultA, resultB)=>{
+      await tg.CloudStorage.setItem("keykey2", "value2",(setStatus,resultA, resultB)=>{
         console.log(`setItem: ${JSON.stringify(setStatus)}  ${JSON.stringify(resultA)}  ${JSON.stringify(resultB)}`);
       });
 
       await tg.CloudStorage.getKeys((setStatus,resultA, resultB)=>{
-        console.log(`setItem: ${JSON.stringify(setStatus)}  ${JSON.stringify(resultA)}  ${JSON.stringify(resultB)}`);
+        console.log(`getKeys: ${JSON.stringify(setStatus)}  ${JSON.stringify(resultA)}  ${JSON.stringify(resultB)}`);
       });
 
-      const {getStatus,resultE, resultF} = await tg.CloudStorage.getItem("keykey",(setStatus,resultA, resultB)=>{
-        console.log(`setItem: ${JSON.stringify(setStatus)}  ${JSON.stringify(resultA)}  ${JSON.stringify(resultB)}`);
+      const {getStatus,resultE, resultF} = await tg.CloudStorage.getItem("keykey3",(setStatus,resultA, resultB)=>{
+        console.log(`getItem: ${JSON.stringify(setStatus)}  ${JSON.stringify(resultA)}  ${JSON.stringify(resultB)}`);
       });
 
     } catch (error:any) {
