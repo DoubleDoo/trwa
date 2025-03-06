@@ -11,18 +11,35 @@ function AuthPage() {
   let tg=useTelegram();
   let user=null;
 
-  const ffff=async ()=>{
+  const ffff = async () => {
+    if (!tg) {
+      console.error("Telegram WebApp is not initialized yet.");
+      return;
+    }
+
+    // Retrieve user information
     user = tg.initDataUnsafe?.user;
-    let set=await tg.CloudStorage.setItem("keykey","value")
-    console.log(`Set : ${JSON.stringify(set)}`)
-    let token= await tg.CloudStorage.getKeys((res:any)=>{
-      console.log(`Res : ${JSON.stringify(res)}`)
-    })
-    console.log(`Token : ${JSON.stringify(token)}`)
-    let vallue= await tg.CloudStorage.getItem("keykey")
-    console.log(`vallue : ${JSON.stringify(vallue)}`)
-    console.log(`User : ${JSON.stringify(user)}`)
-  }
+    console.log(`User: ${JSON.stringify(user)}`);
+
+    try {
+      // Store a value
+      console.log(tg.CloudStorage);
+      await tg.CloudStorage.setItem("keykey", "value");
+      console.log("Successfully set item in CloudStorage");
+
+      // Retrieve keys correctly
+      tg.CloudStorage.getKeys((keys) => {
+        console.log(`Retrieved Keys: ${JSON.stringify(keys)}`);
+      });
+
+      // Retrieve stored value
+      const value = await tg.CloudStorage.getItem("keykey");
+      console.log(`Retrieved Value: ${JSON.stringify(value)}`);
+    } catch (error) {
+      console.error("Error interacting with CloudStorage:", error);
+    }
+  };
+
 
   if(tg){
     ffff();

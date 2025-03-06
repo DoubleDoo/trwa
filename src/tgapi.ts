@@ -11,6 +11,7 @@ const useTelegram = () => {
             if (window.Telegram?.WebApp) {
                 setTg(window.Telegram.WebApp);
                 window.Telegram.WebApp.expand();
+                console.log("Telegram WebApp Initialized:", tg);
             }
         };
         document.body.appendChild(script);
