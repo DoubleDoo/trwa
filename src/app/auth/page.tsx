@@ -13,14 +13,14 @@ function AuthPage() {
   if(tg){
     user = tg.initDataUnsafe?.user;
     let set=tg.CloudStorage.setItem("keykey","value")
-    console.log(`Set : ${set}`)
+    console.log(`Set : ${JSON.stringify(set)}`)
     let token=tg.CloudStorage.getKeys((res:any)=>{
-      console.log(`Res : ${res}`)
+      console.log(`Res : ${JSON.stringify(res)}`)
     })
-    console.log(`Token : ${token}`)
+    console.log(`Token : ${JSON.stringify(token)}`)
     let vallue=tg.CloudStorage.getItem("keykey")
-    console.log(`vallue : ${vallue}`)
-    console.log(`User : ${user}`)
+    console.log(`vallue : ${JSON.stringify(vallue)}`)
+    console.log(`User : ${JSON.stringify(user)}`)
   }
   useEffect(() => {
     async function authenticate() {
