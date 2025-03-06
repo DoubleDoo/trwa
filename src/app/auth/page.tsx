@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import {retrieveLaunchParams, cloudStorage, init} from "@telegram-apps/sdk";
+import {retrieveLaunchParams, setCloudStorageItem,getCloudStorageItem,isCloudStorageSupported , init} from "@telegram-apps/sdk";
 import API from "@/api/user/user";
 import useTelegram from "@/tgapi";
 
@@ -23,11 +23,10 @@ function AuthPage() {
 
         console.log("Telegram Launch Params:", initDataRaw);
         console.log("Telegram User Data:", user);
-        console.log("CloudStorage:", cloudStorage.isSupported());
+        console.log("CloudStorage:", isCloudStorageSupported);
 
         setAuthStatus("Checking stored token...");
-        let token = await cloudStorage
-            .getItem("bearerToken");
+        let token = await getCloudStorageItem("bearerToken");
 
         if (!token) {
           setAuthStatus("No token found. Registering user...");
@@ -52,7 +51,7 @@ function AuthPage() {
         }
 
         setAuthStatus("Authentication successful. Saving token...");
-        await cloudStorage.setItem("bearerToken", token);
+        await setCloudStorageItem("bearerToken", token);
 
         setAuthStatus("Redirecting to game...");
         router.push("/game");
