@@ -10,11 +10,13 @@ function AuthPage() {
   const router = useRouter();
   let tg=useTelegram();
   console.log("______________");
-  const user = tg.initDataUnsafe?.user;
-  if (user) {
-    console.log(user);
+  if(tg){
+    const user = tg.initDataUnsafe?.user;
+    if (user) {
+      console.log(user);
+    }
+    console.log("______________");
   }
-  console.log("______________");
   useEffect(() => {
     async function authenticate() {
       // try {
