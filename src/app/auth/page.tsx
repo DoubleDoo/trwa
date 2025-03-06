@@ -27,7 +27,7 @@ function AuthPage() {
 
         setAuthStatus("Checking stored token...");
         console.log("__________________________________________________________")
-        let token = await getCloudStorageItem("bearerToken");
+        let token = await cloudStorage.getItem("bearerToken");
         console.log("__________________________________________________________")
         if (!token) {
           setAuthStatus("No token found. Registering user...");
@@ -52,7 +52,7 @@ function AuthPage() {
         }
 
         setAuthStatus("Authentication successful. Saving token...");
-        await setCloudStorageItem("bearerToken", token);
+        await cloudStorage.setItem("bearerToken", token);
 
         setAuthStatus("Redirecting to game...");
         router.push("/game");
