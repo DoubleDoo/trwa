@@ -13,11 +13,11 @@ export default function FutureGamePage() {
   }, []);
 
     const { unityProvider } = useUnityContext({
-        loaderUrl: "./build/UnityBuild.loader.js",
-        dataUrl: "./build/UnityBuild.data.unityweb",
-        frameworkUrl: "./build/UnityBuild.framework.js." +
+        loaderUrl: "../../build/tg_survivor.loader.js",
+        dataUrl: "../../build/tg_survivor.data.gz",
+        frameworkUrl: "../../build/tg_survivor.framework.js.gz" +
             "",
-        codeUrl: "./build/UnityBuild.wasm.unityweb",
+        codeUrl: "../../build/tg_survivor.wasm.gz",
     });
     return <Unity unityProvider={unityProvider} />;
 }
