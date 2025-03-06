@@ -13,16 +13,5 @@ export default function FutureGamePage() {
         frameworkUrl: "/Build/WebBuild.framework.js",
         codeUrl: "/Build/WebBuild.wasm.gz",
     });
-
-    // Use useEffect to handle the Unity loading state
-    useEffect(() => {
-        if (!isLoading && !loading) {
-            setLoading(false); // Unity finished loading
-        }
-    }, [isLoading, loading]);
-
-    if (loading || isLoading) {
-        return <div>Loading...</div>; // Display loading indicator until Unity is ready
-    }
     return <Unity unityProvider={unityProvider} />;
 }
