@@ -1,4 +1,5 @@
 import useTelegram from "@/tgapi";
+import AuthWaitingPage from "@/app/auth/page";
 
 class DataStore {
     private static instance: DataStore;
@@ -29,3 +30,5 @@ class DataStore {
         return null;
     }
 }
+
+export default DataStore;
