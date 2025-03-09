@@ -1,7 +1,7 @@
 'use client';
 
-import { useUnityContext } from "react-unity-webgl";
-import { useEffect, useState } from "react";
+import {Unity, useUnityContext} from "react-unity-webgl";
+import {Fragment, useEffect, useState} from "react";
 
 export default function FutureGamePage() {
     const { unityProvider, isLoaded, loadingProgression } = useUnityContext({
@@ -12,9 +12,15 @@ export default function FutureGamePage() {
     });
 
     return (
-        <div>
-            {!isLoaded && <p>Loading... {Math.round(loadingProgression * 100)}%</p>}
-            {isLoaded && <Unity unityProvider={unityProvider} style={{ width: "960px", height: "600px" }} />}
-        </div>
+        <Fragment>
+            {!isLoaded && (
+                <p>Loading Application... {Math.round(loadingProgression * 100)}%</p>
+            )}
+            <Unity
+                unityProvider={unityProvider}
+                style={{ visibility: isLoaded ? "visible" : "hidden" }}
+            />
+        </Fragment>
     );
+
 }
