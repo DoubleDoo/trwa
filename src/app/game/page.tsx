@@ -1,17 +1,20 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import React from "react";
-import { Unity, useUnityContext } from "react-unity-webgl";
+import { useUnityContext } from "react-unity-webgl";
+import { useEffect, useState } from "react";
 
 export default function FutureGamePage() {
-    const [loading, setLoading] = useState(true);
-
-    const { addEventListener, removeEventListener, unityProvider, isLoading, isLoaded } = useUnityContext({
-        loaderUrl: "/tg_survivor.loader.js",
-        dataUrl: "/tg_survivor.data.gz",
-        frameworkUrl: "/tg_survivor.framework.js.gz",
-        codeUrl: "/tg_survivor.wasm.gz",
+    const { unityProvider, isLoaded, loadingProgression } = useUnityContext({
+        loaderUrl: "/tg_survivor/tg_survivor.loader.js",
+        dataUrl: "/tg_survivor/tg_survivor.data.gz",
+        frameworkUrl: "/tg_survivor/tg_survivor.framework.js.gz",
+        codeUrl: "/tg_survivor/tg_survivor.wasm.gz",
     });
-    return <Unity unityProvider={unityProvider} />;
+
+    return (
+        <div>
+            {!isLoaded && <p>Loading... {Math.round(loadingProgression * 100)}%</p>}
+            {isLoaded && <Unity unityProvider={unityProvider} style={{ width: "960px", height: "600px" }} />}
+        </div>
+    );
 }
