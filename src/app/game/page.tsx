@@ -8,10 +8,10 @@ export default function FutureGamePage() {
     const [loading, setLoading] = useState(true);
 
     const { addEventListener, removeEventListener, unityProvider, isLoading, isLoaded } = useUnityContext({
-        loaderUrl: "/Build/WebBuild.loader.js",
-        dataUrl: "/Build/WebBuild.data",
-        frameworkUrl: "/Build/WebBuild.framework.js",
-        codeUrl: "/Build/WebBuild.wasm",
+        loaderUrl: "/build/WebBuild.loader.js",
+        dataUrl: "/build/WebBuild.data.gz",
+        frameworkUrl: "/build/WebBuild.framework.js",
+        codeUrl: "/build/WebBuild.wasm.gz",
     });
     return <Unity unityProvider={unityProvider} />;
 }
