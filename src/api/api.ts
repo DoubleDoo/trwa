@@ -20,8 +20,11 @@ export const registerUser = async (user: any) => {
     console.log(data)
     try {
         const response = await apiClient.post("/models/c6kqziew", data);
+        console.log("_____________________________");
         console.log(response.data);
-    } catch (error) {}
+    } catch (error) {
+        console.log("ERROR____________________")
+    }
     return { success: true};
 };
 
