@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import useTelegramAPI from "@/telegram/useTelegram";
-import {authenticateUser, registerUser} from "@/api/api";
+import { authenticateUser, registerUser } from "@/api/api";
 
 function AuthPage() {
   const [authStatus, setAuthStatus] = useState("Initializing...");
@@ -33,23 +33,23 @@ function AuthPage() {
         setAuthStatus("No token found. Registering user...");
         const registerResponse = await registerUser(user);
 
-        if (!registerResponse?.success || !registerResponse?.token) {
+        if (!registerResponse?.success) {
           setAuthStatus("Registration failed.");
           console.error("Registration failed:", registerResponse);
           return;
         }
 
-        token = registerResponse.token;
+        setAuthStatus("Authenticating...");
+        const authResponse = await authenticateUser(user);
+
+        if (!authResponse?.success || !authResponse.token) {
+          setAuthStatus("Authentication failed.");
+          console.error("Authentication failed:", authResponse);
+          return;
+        }
+
+        token = authResponse.token;
         await api!.setItem("bearerToken", token!);
-      }
-
-      setAuthStatus("Authenticating...");
-      const authResponse = await authenticateUser(token!);
-
-      if (!authResponse?.success) {
-        setAuthStatus("Authentication failed.");
-        console.error("Authentication failed:", authResponse);
-        return;
       }
 
       setAuthStatus("Authentication successful! Redirecting...");
@@ -63,7 +63,7 @@ function AuthPage() {
   };
 
   return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100vh', textAlign: 'center' }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100vh", textAlign: "center" }}>
         <h2>{authStatus}</h2>
       </div>
   );
