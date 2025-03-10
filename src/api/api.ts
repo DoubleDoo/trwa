@@ -13,12 +13,13 @@ const apiClient = axios.create({
 });
 
 export const registerUser = async (user: any) => {
+    let data={
+        nick:user.username,
+        tg_id:user.id
+    }
+    console.log(data)
     try {
-        const response = await apiClient.post("/models/c6kqziew",
-        {
-            nick:user.username,
-            tg_id:user.id
-        });
+        const response = await apiClient.post("/models/c6kqziew", data);
         console.log(response.data);
     } catch (error) {}
     return { success: true};
