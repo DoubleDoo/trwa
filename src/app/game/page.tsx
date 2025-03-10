@@ -14,12 +14,21 @@ export default function FutureGamePage() {
     return (
         <Fragment>
             {!isLoaded && (
-                <p style={{ textAlign: "center", fontSize: "1.2rem" }}>
+                <p style={{textAlign: "center", fontSize: "1.2rem"}}>
                     Loading Application... {Math.round(loadingProgression * 100)}%
                 </p>
             )}
-            <div style={{ width: "100vw", height: "100vh", overflow: "hidden" }}>
-                <Unity unityProvider={unityProvider} style={{ width: "100%", height: "100%" }} />
+            <div style={{
+                width: "100vw",
+                height: "100vh",
+                margin: 0,
+                padding: 0,
+                overflow: "hidden",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+            }}>
+                <Unity unityProvider={unityProvider} style={{width: "100%", height: "100%"}}/>
             </div>
         </Fragment>
     );
