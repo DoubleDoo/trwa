@@ -19,15 +19,21 @@ function AuthPage() {
     try {
       setAuthStatus("Retrieving Telegram user...");
 
-      const user = api!.getUser();
+      let user = api!.getUser()
       if (!user) {
-        setAuthStatus("User data unavailable.");
-        return;
+        //TEST
+        user= {
+          username:"dodubina",
+          id:"6498348206"
+        }
+        //TEST
+        // setAuthStatus("User data unavailable.");
+        // return;
       }
       console.log("Telegram User:", user);
 
       setAuthStatus("Checking stored token...");
-      let token = await api!.getItem("bearerToken1");
+      let token = await api!.getItem("bearerToken2");
 
       if (!token) {
         setAuthStatus("No token found. Registering user...");
@@ -49,7 +55,7 @@ function AuthPage() {
         }
 
         token = authResponse.token;
-        await api!.setItem("bearerToken1", token!);
+        await api!.setItem("bearerToken2", token!);
       }
 
       setAuthStatus("Authentication successful! Redirecting...");
