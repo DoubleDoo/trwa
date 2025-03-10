@@ -27,7 +27,7 @@ function AuthPage() {
       console.log("Telegram User:", user);
 
       setAuthStatus("Checking stored token...");
-      let token = await api!.getItem("bearerToken");
+      let token = await api!.getItem("bearerToken1");
 
       if (!token) {
         setAuthStatus("No token found. Registering user...");
@@ -49,7 +49,7 @@ function AuthPage() {
         }
 
         token = authResponse.token;
-        await api!.setItem("bearerToken", token!);
+        await api!.setItem("bearerToken1", token!);
       }
 
       setAuthStatus("Authentication successful! Redirecting...");
