@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import useTelegramAPI from "@/useTelegram";
-import {authenticateUser, registerUser} from "@/api";
+import useTelegramAPI from "@/telegram/useTelegram";
+import {authenticateUser, registerUser} from "@/api/api";
 
 function AuthPage() {
   const [authStatus, setAuthStatus] = useState("Initializing...");
   const router = useRouter();
-  const { tg, api } = useTelegramAPI(); // Use the custom Telegram API hook
+  const { tg, api } = useTelegramAPI();
 
   useEffect(() => {
     if (!tg || !api) return;
